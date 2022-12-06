@@ -1,0 +1,27 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:GetBucketAcl",
+        "s3:PutBucketAcl",
+        "s3:DeleteObject",
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketLocation",
+        "s3-object-lambda:*",
+        "s3:AbortMultipartUpload",
+        "s3:ListBucketMultipartUploads"
+      ],
+      "Resource": [
+        "${s3_resource_arn_1}",
+        "${s3_resource_arn_2}",
+        "${s3_resource_arn_3}",
+        "${other_arn}"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sqs:*"
+      ],
+      "Resource": [
+        "${sqs_webhook_event_arn}",
+        "${other_arn}"
+      ]
+    }
+  ]
+}

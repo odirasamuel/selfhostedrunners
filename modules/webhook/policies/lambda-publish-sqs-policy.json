@@ -1,0 +1,13 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["sqs:*"],
+      "Resource": [
+        "${sqs_resource_arn}",
+        "${other_arn}"
+      ]
+    }
+  ]
+}
