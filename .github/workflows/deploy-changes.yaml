@@ -41,34 +41,34 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init
-        working-directory: /self-hosted-runners
+        working-directory: self-hosted-runners/
         shell: bash
       - name: Terraform Workspace
         id: workspace-setup
         run: terraform workspace select dev
-        working-directory: /self-hosted-runners
+        working-directory: self-hosted-runners/
         shell: bash
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
-        working-directory: /self-hosted-runners
+        working-directory: self-hosted-runners/
         shell: bash
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
-        working-directory: /self-hosted-runners
+        working-directory: self-hosted-runners/
         shell: bash
       - name: Terraform Plan
         id: plan
         run: |
           terraform plan -input=false -var-file=ppi.tfvars -no-color -out tf_plan_dev
-        working-directory: /self-hosted-runners
+        working-directory: self-hosted-runners/
         shell: bash
       - name: Terraform Show
         id: show
         run: |
           terraform show -no-color tf_plan_dev 2>&1 | tee /tmp/tf_plan_dev.txt
-        working-directory: /self-hosted-runners
+        working-directory: self-hosted-runners/
         shell: bash
       - name: Write Plan to Pull-Request
         uses: actions/github-script@v6
@@ -110,5 +110,5 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           terraform apply -input=false tf_plan_dev
-        working-directory: /self-hosted-runners
+        working-directory: self-hosted-runners/
         shell: bash
