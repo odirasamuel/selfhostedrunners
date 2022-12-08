@@ -20,14 +20,14 @@ resource "aws_lambda_function" "syncer" {
   s3_key            = data.aws_s3_object.lambda_s3_bucket.key
   s3_object_version = data.aws_s3_object.lambda_s3_bucket.version_id
   # filename          = data.aws_s3_object.lambda_s3_bucket.key
-  source_code_hash  = filebase64sha256("../modules/download-upload-lambda/runner-binaries-syncer.zip")
-  function_name     = "${var.stack_name}-${var.prefix}-runner-binaries-syncer"
-  role              = aws_iam_role.syncer_lambda.arn
-  handler           = "index.handler"
-  runtime           = var.lambda_runtime
-  timeout           = var.lambda_timeout
-  memory_size       = 512
-  architectures     = [var.lambda_architecture]
+  source_code_hash = filebase64sha256("../modules/download-upload-lambda/runner-binaries-syncer.zip")
+  function_name    = "${var.stack_name}-${var.prefix}-runner-binaries-syncer"
+  role             = aws_iam_role.syncer_lambda.arn
+  handler          = "index.handler"
+  runtime          = var.lambda_runtime
+  timeout          = var.lambda_timeout
+  memory_size      = 512
+  architectures    = [var.lambda_architecture]
 
   environment {
     variables = {
@@ -49,7 +49,7 @@ resource "aws_lambda_function" "syncer" {
     for_each = var.lambda_subnet_ids != null ? [true] : []
     content {
       security_group_ids = [aws_security_group.runner_bin_sg.id]
-      subnet_ids = var.lambda_subnet_ids
+      subnet_ids         = var.lambda_subnet_ids
     }
   }
 
@@ -87,7 +87,7 @@ resource "aws_iam_role_policy" "lambda_logging" {
 
   policy = templatefile("${path.module}/policies/lambda-cloudwatch.json", {
     log_group_arn = "${aws_cloudwatch_log_group.syncer.arn}",
-    other_arn = "*"
+    other_arn     = "*"
   })
 }
 
@@ -99,7 +99,7 @@ resource "aws_iam_role_policy" "syncer" {
     s3_resource_arn_1 = "${aws_s3_bucket.action_dist.arn}",
     s3_resource_arn_2 = "${aws_s3_bucket.action_dist.arn}/*",
     s3_resource_arn_3 = "${aws_s3_bucket.action_dist.arn}/${local.action_runner_distribution_object_key}"
-    other_arn = "*"
+    other_arn         = "*"
   })
 }
 
@@ -167,9 +167,9 @@ resource "aws_lambda_permission" "syncer" {
 ###################################################################################
 
 resource "aws_s3_object" "trigger" {
-  bucket = aws_s3_bucket.action_dist.id
-  key    = "triggers/${aws_lambda_function.syncer.id}-trigger.json"
-  source = "${path.module}/trigger.json"
+  bucket     = aws_s3_bucket.action_dist.id
+  key        = "triggers/${aws_lambda_function.syncer.id}-trigger.json"
+  source     = "${path.module}/trigger.json"
   depends_on = [aws_s3_bucket_notification.on_deploy]
 }
 

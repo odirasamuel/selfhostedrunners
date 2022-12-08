@@ -158,15 +158,15 @@ output "private_subnets_id" {
 }
 
 output "private_subnets_1_id" {
-  value = "${aws_subnet.private_subnets[0].id}"
+  value = aws_subnet.private_subnets[0].id
 }
 
 output "private_subnets_2_id" {
-  value = "${aws_subnet.private_subnets[1].id}"
+  value = aws_subnet.private_subnets[1].id
 }
 
 output "private_subnets_3_id" {
-  value = "${aws_subnet.private_subnets[2].id}"
+  value = aws_subnet.private_subnets[2].id
 }
 
 output "private_route_table_id" {

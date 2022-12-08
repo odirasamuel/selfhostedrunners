@@ -90,11 +90,11 @@ resource "aws_sqs_queue" "queued_builds_dlq" {
 }
 
 output "sqs_build_queue_arn" {
-  value = "${aws_sqs_queue.queued_builds.arn}"
+  value = aws_sqs_queue.queued_builds.arn
 }
 
 output "sqs_build_queue_id" {
-  value = "${aws_sqs_queue.queued_builds.id}"
+  value = aws_sqs_queue.queued_builds.id
 }
 
 output "sqs_webhook_events_workflow_job_queue_arn" {
