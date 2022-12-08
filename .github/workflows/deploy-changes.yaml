@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   deploy-terraform-configurations-to-python-package-index-stack-dev:
-    runs-on: "self-hosted"
+    runs-on: "ubuntu-latest"
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
