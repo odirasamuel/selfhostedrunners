@@ -105,7 +105,7 @@ variable "runner_group_name" {
 variable "scale_up_reserved_concurrent_executions" {
   description = "Amount of reserved concurrent executions for the scale-up lambda function. A value of 0 disables lambda from being triggered and -1 removes any concurrency limitations."
   type        = number
-  default     = 1
+  default     = -1
 }
 
 variable "lambda_timeout" {
@@ -381,11 +381,11 @@ variable "pool_runner_owner" {
   default     = "Opentrons"
 }
 
-variable "pool_lambda_reserved_concurrent_executions" {
-  description = "Amount of reserved concurrent executions for the scale-up lambda function. A value of 0 disables lambda from being triggered and -1 removes any concurrency limitations."
-  type        = number
-  default     = 1
-}
+# variable "pool_lambda_reserved_concurrent_executions" {
+#   description = "Amount of reserved concurrent executions for the scale-up lambda function. A value of 0 disables lambda from being triggered and -1 removes any concurrency limitations."
+#   type        = number
+#   default     = 1
+# }
 
 variable "pool_config" {
   description = "The configuration for updating the pool. The `pool_size` to adjust to by the events triggered by the `schedule_expression`. For example you can configure a cron expression for week days to adjust the pool to 10 and another expression for the weekend to adjust the pool to 1."

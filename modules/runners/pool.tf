@@ -21,7 +21,7 @@ module "pool" {
       log_level                      = var.log_level
       log_type                       = var.log_type
       logging_retention_in_days      = var.logging_retention_in_days
-      reserved_concurrent_executions = var.pool_lambda_reserved_concurrent_executions
+      # reserved_concurrent_executions = var.pool_lambda_reserved_concurrent_executions
       s3_bucket                      = data.aws_s3_object.lambda_s3_bucket.bucket
       s3_key                         = data.aws_s3_object.lambda_s3_bucket.key
       s3_object_version              = data.aws_s3_object.lambda_s3_bucket.version_id

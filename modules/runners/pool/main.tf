@@ -24,7 +24,7 @@ resource "aws_lambda_function" "pool" {
   architectures                  = [var.config.lambda.architecture]
   runtime                        = var.config.lambda.runtime
   timeout                        = var.config.lambda.timeout
-  reserved_concurrent_executions = var.config.lambda.reserved_concurrent_executions
+  # reserved_concurrent_executions = var.config.lambda.reserved_concurrent_executions
   memory_size                    = 512
   tags                           = local.tags
 

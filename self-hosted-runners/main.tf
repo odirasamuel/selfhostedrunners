@@ -6,7 +6,7 @@ module "get_lambdas" {
   prefix     = var.prefix
 
   providers = {
-    aws = aws.robotics_robot_stack_dev
+    aws = aws.dev
   }
 }
 
@@ -19,7 +19,7 @@ module "ssm" {
   github_app = var.github_app
 
   providers = {
-    aws = aws.robotics_robot_stack_dev
+    aws = aws.dev
   }
 }
 
@@ -39,7 +39,7 @@ module "sqs" {
   workflow_job_queue_configuration = var.workflow_job_queue_configuration
 
   providers = {
-    aws = aws.robotics_robot_stack_dev
+    aws = aws.dev
   }
 }
 
@@ -58,7 +58,7 @@ module "test_dev_vpc" {
   stack_name            = var.stack_name
 
   providers = {
-    aws = aws.robotics_robot_stack_dev
+    aws = aws.dev
   }
 }
 
@@ -83,7 +83,7 @@ module "runner_binaries_syncer" {
   cidr_block                 = var.cidr_block
 
   providers = {
-    aws = aws.robotics_robot_stack_dev
+    aws = aws.dev
   }
 
   depends_on = [
@@ -134,7 +134,7 @@ module "runners" {
   log_level                                  = var.log_level
   log_type                                   = var.log_type
   logging_retention_in_days                  = var.logging_retention_in_days
-  pool_lambda_reserved_concurrent_executions = var.pool_lambda_reserved_concurrent_executions
+  # pool_lambda_reserved_concurrent_executions = var.pool_lambda_reserved_concurrent_executions
   lambda_subnet_ids                          = ["${module.test_dev_vpc[0].private_subnets_1_id}", "${module.test_dev_vpc[0].private_subnets_2_id}", "${module.test_dev_vpc[0].private_subnets_3_id}"]
   lambda_architecture                        = var.lambda_architecture
   lambda_runtime                             = var.lambda_runtime
@@ -170,7 +170,7 @@ module "runners" {
   runner_extra_labels             = var.runner_extra_labels
 
   providers = {
-    aws = aws.robotics_robot_stack_dev
+    aws = aws.dev
   }
 
   depends_on = [
@@ -211,7 +211,7 @@ module "webhook" {
   github_app_key_base64_arn     = module.ssm[0].github_app_key_base64_arn
 
   providers = {
-    aws = aws.robotics_robot_stack_dev
+    aws = aws.dev
   }
 
   depends_on = [

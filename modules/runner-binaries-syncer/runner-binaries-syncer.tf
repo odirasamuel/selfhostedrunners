@@ -131,36 +131,36 @@ resource "aws_lambda_permission" "syncer" {
   source_arn    = aws_cloudwatch_event_rule.syncer.arn
 }
 
-data "aws_iam_policy_document" "access_to_dist_bucket" {
-  statement {
-    principals {
-      type = "AWS"
-      identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.stack_name}-action-syncer-lambda-role",
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.stack_name}-${var.prefix}-runner-role"
-      ]
-    }
-    actions = [
-      "s3:GetObject",
-      "s3:PutObject",
-      "s3:PutObjectAcl",
-      "s3:AbortMultipartUpload",
-      "s3:GetBucketLocation",
-      "s3:ListBucket",
-      "s3:ListBucketMultipartUploads"
-    ]
-    resources = [
-      "${aws_s3_bucket.action_dist.arn}",
-      "${aws_s3_bucket.action_dist.arn}/*"
-    ]
-  }
-}
+# data "aws_iam_policy_document" "access_to_dist_bucket" {
+#   statement {
+#     principals {
+#       type = "AWS"
+#       identifiers = [
+#         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.stack_name}-action-syncer-lambda-role",
+#         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.stack_name}-${var.prefix}-runner-role"
+#       ]
+#     }
+#     actions = [
+#       "s3:GetObject",
+#       "s3:PutObject",
+#       "s3:PutObjectAcl",
+#       "s3:AbortMultipartUpload",
+#       "s3:GetBucketLocation",
+#       "s3:ListBucket",
+#       "s3:ListBucketMultipartUploads"
+#     ]
+#     resources = [
+#       "${aws_s3_bucket.action_dist.arn}",
+#       "${aws_s3_bucket.action_dist.arn}/*"
+#     ]
+#   }
+# }
 
 
-resource "aws_s3_bucket_policy" "access_to_dist_bucket" {
-  bucket = aws_s3_bucket.action_dist.id
-  policy = data.aws_iam_policy_document.access_to_dist_bucket.json
-}
+# resource "aws_s3_bucket_policy" "access_to_dist_bucket" {
+#   bucket = aws_s3_bucket.action_dist.id
+#   policy = data.aws_iam_policy_document.access_to_dist_bucket.json
+# }
 
 ###################################################################################
 ### Extra trigger to trigger from S3 to execute the lambda after first deployment

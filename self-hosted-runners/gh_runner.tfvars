@@ -1,5 +1,5 @@
-stack_name               = "test-opentrons"
-distribution_bucket_name = "test-dist-test2022"
+stack_name               = "odira-runners"
+distribution_bucket_name = "odira-dist"
 availability_zones       = ["us-east-1a", "us-east-1b", "us-east-1c"]
 cidr_block = {
   dev     = "10.53.0.0/22"
@@ -65,12 +65,12 @@ idle_config = [
   }
 ]
 github_app = {
-  id             = "257387"
-  key_base64     = "opentronsrunnerapp.private-key.pem"
-  webhook_secret = "OrganizationOpentronsWebhookSecret19112022"
+  id             = "269936"
+  key_base64     = "odi-selfhosted-github-app.2022-12-07.private-key.pem"
+  webhook_secret = "OdiWebhookSecret07122022"
 }
 repository_white_list = [
-  "robot-stack-infra",
-  "opentrons-python-packages",
-  "oe-core"
+  # "robot-stack-infra",
+  # "opentrons-python-packages",
+  # "oe-core"
 ]
