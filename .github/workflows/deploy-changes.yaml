@@ -37,7 +37,7 @@ jobs:
           aws configure set output json --profile odira
           aws configure set region us-east-2 --profile odira
           aws configure set role_arn arn:aws:iam::402888776145:role/administrator --profile odira
-          aws configure set source_profile identity --profile odira          
+          aws configure set source_profile odira --profile odira          
       - name: Terraform Init
         id: init
         run: terraform init
