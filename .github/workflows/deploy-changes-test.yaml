@@ -1,0 +1,114 @@
+on:
+  push:
+    branches:
+      - "*"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  deploy-terraform-configurations-to-python-package-index-stack-dev:
+    runs-on: "self-hosted"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.0
+          terraform_wrapper: false
+      - name: Set up aws cli
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          sudo yum install unzip
+          unzip awscliv2.zip
+          sudo ./aws/install --update
+          aws --version
+      - name: Add profile credentials to  ~/.aws/credntials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile odira
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile odira
+      - name: Add config for profiles in ~/.aws/config
+        run: |
+          aws configure set region us-east-2 --profile odira
+          aws configure set output json --profile odira
+          aws configure set region us-east-2 --profile odira
+          aws configure set role_arn arn:aws:iam::402888776145:role/administrator --profile odira
+          aws configure set source_profile odira --profile odira          
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        working-directory: test/
+        shell: bash
+      - name: Terraform Workspace
+        id: workspace-setup
+        run: terraform workspace select dev
+        working-directory: test/
+        shell: bash
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        working-directory: test/
+        shell: bash
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: test/
+        shell: bash
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -input=false -var-file=gh_runner.tfvars -no-color -out tf_plan_dev
+        working-directory: test/
+        shell: bash
+      - name: Terraform Show
+        id: show
+        run: |
+          terraform show -no-color tf_plan_dev 2>&1 | tee /tmp/tf_plan_dev.txt
+        working-directory: test/
+        shell: bash
+      - name: Write Plan to Pull-Request
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ inputs.GITHUB_TOKEN }}
+          script: |
+            const fs = require("fs");
+            const plan = fs.readFileSync("/tmp/tf_plan_dev.txt", "utf8");
+            const maxGitHubBodyCharacters = 65536;
+            function chunkSubstr(str, size) {
+              const numChunks = Math.ceil(str.length / size)
+              const chunks = new Array(numChunks)
+              for (let i = 0, o = 0; i < numChunks; ++1, o += size) {
+                chunks[i] = str.substr(o, size)
+              }
+              return chunks
+            }
+            var plans = chunkSubstr(plan, maxGitHubBodyCharacters);
+            for (let i = 0; i < plans.length; i++) {
+              const output = `### ${{ inputs.plan-title }} Part # ${i + 1}
+              #### Terraform Format: \`${{ steps.fmt.outcome }}\`
+              #### Terraform Initialization: \`${{ steps.init.outcome }}\`
+              #### Terraform Plan: \`${{ steps.plan.outcome }}\`
+              <details><summary>Show Plan</summary>
+              \`\`\`\n
+              ${plans[i]}
+              \`\`\`
+              </details>
+              *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working-directory }}\`, Workflow: \`${{ github.workflow }}\`*`;
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output
+              })
+            }
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          terraform apply -input=false tf_plan_dev
+        working-directory: test/
+        shell: bash
