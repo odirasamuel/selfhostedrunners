@@ -36,6 +36,7 @@ module "runners" {
   enable_organization_runners       = false
   scale_up_reserved_concurrent_executions = var.scale_up_reserved_concurrent_executions
   pool_lambda_reserved_concurrent_executions = var.pool_lambda_reserved_concurrent_executions
+  instance_target_capacity_type = var.instance_target_capacity_type
 
   providers = {
     aws = aws.test

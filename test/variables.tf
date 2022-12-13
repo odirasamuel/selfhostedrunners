@@ -54,3 +54,14 @@ variable "pool_lambda_reserved_concurrent_executions" {
   type        = number
   default     = -1
 }
+
+variable "instance_target_capacity_type" {
+  description = "Default lifecyle used runner instances, can be either `spot` or `on-demand`."
+  type        = string
+  default     = "on-demand"
+
+  validation {
+    condition     = contains(["spot", "on-demand"], var.instance_target_capacity_type)
+    error_message = "The instance target capacity should be either spot or on-demand."
+  }
+}
