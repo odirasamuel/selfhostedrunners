@@ -10,15 +10,28 @@ variable "stack_name" {
 }
 
 variable "github_app_webhook_secret_arn" {
-  type = string
+  description = "GitHub App webhook secret ARN"
+  type        = string
 }
 
 variable "github_app_id_arn" {
-  type = string
+  description = "GitHub App ID ARN"
+  type        = string
 }
 
 variable "github_app_key_base64_arn" {
-  type = string
+  description = "GitHub App Key ARN"
+  type        = string
+}
+
+variable "github_app_client_id_arn" {
+  description = "GitHub App Client ID ARN"
+  type        = string
+}
+
+variable "github_app_client_secret_arn" {
+  description = "GitHub App Client Secret ARN"
+  type        = string
 }
 
 variable "runner_labels" {

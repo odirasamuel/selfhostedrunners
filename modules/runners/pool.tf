@@ -15,6 +15,10 @@ module "pool" {
     app_id_arn                    = var.app_id_arn
     webhook_secret_arn            = var.webhook_secret_arn
     key_arn                       = var.key_arn
+    client_id_arn                 = var.client_id_arn
+    client_secret_arn             = var.client_secret_arn
+    client_id_name                = var.client_id_name
+    client_secret_name            = var.client_secret_name
     app_id_name                   = var.app_id_name
     key_base_name                 = var.key_base_name
     lambda = {

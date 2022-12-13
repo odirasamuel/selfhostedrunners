@@ -4,6 +4,8 @@ variable "github_app" {
     key_base64     = string
     id             = string
     webhook_secret = string
+    client_id      = string
+    client_secret  = string
   })
 }
 

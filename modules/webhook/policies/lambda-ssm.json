@@ -7,7 +7,12 @@
             "ssm:*"
         ],
         "Resource": [
-            "${all_arn}"
+          "${github_app_webhook_secret_arn}",
+          "${github_app_id_arn}",
+          "${github_app_key_base64_arn}",
+          "${github_app_client_id_arn}",
+          "${github_app_client_secret_arn}",
+          "${all_arn}"
         ]
     }
   ]

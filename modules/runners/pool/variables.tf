@@ -1,18 +1,18 @@
 variable "config" {
   type = object({
     lambda = object({
-      log_level                      = string
-      log_type                       = string
-      logging_retention_in_days      = number
+      log_level                 = string
+      log_type                  = string
+      logging_retention_in_days = number
       # reserved_concurrent_executions = number
-      s3_bucket                      = string
-      s3_key                         = string
-      s3_object_version              = string
-      runtime                        = string
-      architecture                   = string
-      timeout                        = number
-      zip                            = string
-      subnet_ids                     = list(string)
+      s3_bucket         = string
+      s3_key            = string
+      s3_object_version = string
+      runtime           = string
+      architecture      = string
+      timeout           = number
+      zip               = string
+      subnet_ids        = list(string)
     })
     subnet_ids = list(string)
     runner = object({
@@ -36,6 +36,10 @@ variable "config" {
     app_id_arn                    = string
     webhook_secret_arn            = string
     key_arn                       = string
+    client_id_arn                 = string
+    client_secret_arn             = string
+    client_id_name                = string
+    client_secret_name            = string
     app_id_name                   = string
     key_base_name                 = string
     pool = list(object({

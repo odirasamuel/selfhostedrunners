@@ -21,14 +21,16 @@ resource "aws_lambda_function" "scale_down" {
 
   environment {
     variables = {
-      ENVIRONMENT                          = terraform.workspace
-      LOG_LEVEL                            = var.log_level
-      LOG_TYPE                             = var.log_type
-      MINIMUM_RUNNING_TIME_IN_MINUTES      = coalesce(var.minimum_running_time_in_minutes, local.min_runtime_defaults)
-      PARAMETER_GITHUB_APP_ID_NAME         = local.app_id_name
-      PARAMETER_GITHUB_APP_KEY_BASE64_NAME = local.key_base_name
-      RUNNER_BOOT_TIME_IN_MINUTES          = var.runner_boot_time_in_minutes
-      SCALE_DOWN_CONFIG                    = jsonencode(var.idle_config)
+      ENVIRONMENT                             = terraform.workspace
+      LOG_LEVEL                               = var.log_level
+      LOG_TYPE                                = var.log_type
+      MINIMUM_RUNNING_TIME_IN_MINUTES         = coalesce(var.minimum_running_time_in_minutes, local.min_runtime_defaults)
+      PARAMETER_GITHUB_APP_ID_NAME            = local.app_id_name
+      PARAMETER_GITHUB_APP_KEY_BASE64_NAME    = local.key_base_name
+      PARAMETER_GITHUB_APP_CLIENT_ID_NAME     = local.client_id_name
+      PARAMETER_GITHUB_APP_CLIENT_SECRET_NAME = local.client_secret_name
+      RUNNER_BOOT_TIME_IN_MINUTES             = var.runner_boot_time_in_minutes
+      SCALE_DOWN_CONFIG                       = jsonencode(var.idle_config)
     }
   }
 
@@ -75,7 +77,12 @@ resource "aws_iam_role_policy" "scale_down" {
   name = "${var.stack_name}-${var.prefix}-lambda-scale-down-policy"
   role = aws_iam_role.scale_down.name
   policy = templatefile("${path.module}/policies/lambda-scale-down.json", {
-    all_arn = "*"
+    github_app_webhook_secret_arn = "${var.webhook_secret_arn}"
+    github_app_id_arn             = "${var.app_id_arn}"
+    github_app_key_base64_arn     = "${var.key_arn}"
+    github_app_client_id_arn      = "${var.client_id_arn}"
+    github_app_client_secret_arn  = "${var.client_secret_arn}"
+    all_arn                       = "*"
   })
 }
 

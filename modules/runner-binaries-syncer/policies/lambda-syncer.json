@@ -14,7 +14,10 @@
         "s3:GetBucketLocation",
         "s3-object-lambda:*",
         "s3:AbortMultipartUpload",
-        "s3:ListBucketMultipartUploads"
+        "s3:ListBucketMultipartUploads",
+        "s3:GetObjectTagging",
+        "s3:GetObjectVersionTagging",
+        "s3:PutObjectTagging"
       ],
       "Resource": [
         "${s3_resource_arn_1}",

@@ -164,6 +164,26 @@ variable "key_base_name" {
   type        = string
 }
 
+variable "client_id_arn" {
+  description = "Client Id ARN"
+  type        = string
+}
+
+variable "client_id_name" {
+  description = "Client ID Name"
+  type        = string
+}
+
+variable "client_secret_name" {
+  description = "Client Secret Name"
+  type        = string
+}
+
+variable "client_secret_arn" {
+  description = "Client Secret ARN"
+  type        = string
+}
+
 variable "enable_organization_runners" {
   type    = bool
   default = true

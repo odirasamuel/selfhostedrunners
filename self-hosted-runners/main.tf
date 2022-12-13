@@ -167,6 +167,10 @@ module "runners" {
   key_arn                         = module.ssm[0].github_app_key_base64_arn
   key_base_name                   = module.ssm[0].github_app_key_base64_name
   webhook_secret_arn              = module.ssm[0].github_app_webhook_secret_arn
+  client_id_arn                   = module.ssm[0].github_app_client_id_arn
+  client_id_name                  = module.ssm[0].github_app_client_id_name
+  client_secret_name              = module.ssm[0].github_app_client_secret_name
+  client_secret_arn               = module.ssm[0].github_app_client_secret_arn
   runner_extra_labels             = var.runner_extra_labels
 
   providers = {
@@ -209,6 +213,8 @@ module "webhook" {
   github_app_webhook_secret_arn = module.ssm[0].github_app_webhook_secret_arn
   github_app_id_arn             = module.ssm[0].github_app_id_arn
   github_app_key_base64_arn     = module.ssm[0].github_app_key_base64_arn
+  github_app_client_id_arn      = module.ssm[0].github_app_client_id_arn
+  github_app_client_secret_arn  = module.ssm[0].github_app_client_secret_arn
 
   providers = {
     aws = aws.dev

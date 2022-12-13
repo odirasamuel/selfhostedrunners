@@ -29,6 +29,22 @@ resource "aws_ssm_parameter" "github_app_webhook_secret" {
   tags = local.tags
 }
 
+resource "aws_ssm_parameter" "github_app_client_id" {
+  name  = "/actions_runner/${var.stack_name}-${var.prefix}/github_app_client_id"
+  type  = "SecureString"
+  value = var.github_app.client_id
+
+  tags = local.tags
+}
+
+resource "aws_ssm_parameter" "github_app_client_secret" {
+  name  = "/actions_runner/${var.stack_name}-${var.prefix}/github_app_client_secret"
+  type  = "SecureString"
+  value = var.github_app.client_secret
+
+  tags = local.tags
+}
+
 
 output "github_app_webhook_secret_arn" {
   value = aws_ssm_parameter.github_app_webhook_secret.arn
@@ -52,4 +68,20 @@ output "github_app_id_name" {
 
 output "github_app_id_arn" {
   value = aws_ssm_parameter.github_app_id.arn
+}
+
+output "github_app_client_id_name" {
+  value = aws_ssm_parameter.github_app_client_id.name
+}
+
+output "github_app_client_id_arn" {
+  value = aws_ssm_parameter.github_app_client_id.arn
+}
+
+output "github_app_client_secret_name" {
+  value = aws_ssm_parameter.github_app_client_secret.name
+}
+
+output "github_app_client_secret_arn" {
+  value = aws_ssm_parameter.github_app_client_secret.arn
 }

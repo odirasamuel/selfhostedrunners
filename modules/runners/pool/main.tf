@@ -9,6 +9,10 @@ locals {
   app_id_name        = var.config.app_id_name
   key_base_name      = var.config.key_base_name
   webhook_secret_arn = var.config.webhook_secret_arn
+  client_id_name     = var.config.client_id_name
+  client_id_arn      = var.config.client_id_arn
+  client_secret_name = var.config.client_secret_name
+  client_secret_arn  = var.config.client_secret_arn
 }
 
 resource "aws_lambda_function" "pool" {
@@ -17,35 +21,37 @@ resource "aws_lambda_function" "pool" {
   s3_key            = var.config.lambda.s3_key != null ? var.config.lambda.s3_key : null
   s3_object_version = var.config.lambda.s3_object_version != null ? var.config.lambda.s3_object_version : null
   # filename                       = var.config.lambda.s3_bucket == null ? var.config.lambda.zip : null
-  source_code_hash               = var.config.lambda.s3_bucket == null ? filebase64sha256(".../modules/download-upload-lambda/runners.zip") : null
-  function_name                  = "${var.config.stack_name}-${var.config.prefix}-pool"
-  role                           = aws_iam_role.pool.arn
-  handler                        = "index.adjustPool"
-  architectures                  = [var.config.lambda.architecture]
-  runtime                        = var.config.lambda.runtime
-  timeout                        = var.config.lambda.timeout
+  source_code_hash = var.config.lambda.s3_bucket == null ? filebase64sha256(".../modules/download-upload-lambda/runners.zip") : null
+  function_name    = "${var.config.stack_name}-${var.config.prefix}-pool"
+  role             = aws_iam_role.pool.arn
+  handler          = "index.adjustPool"
+  architectures    = [var.config.lambda.architecture]
+  runtime          = var.config.lambda.runtime
+  timeout          = var.config.lambda.timeout
   # reserved_concurrent_executions = var.config.lambda.reserved_concurrent_executions
-  memory_size                    = 512
-  tags                           = local.tags
+  memory_size = 512
+  tags        = local.tags
 
   environment {
     variables = {
-      DISABLE_RUNNER_AUTOUPDATE            = var.config.runner.disable_runner_autoupdate
-      ENABLE_EPHEMERAL_RUNNERS             = var.config.runner.ephemeral
-      ENVIRONMENT                          = terraform.workspace
-      INSTANCE_ALLOCATION_STRATEGY         = var.config.instance_allocation_strategy
-      INSTANCE_MAX_SPOT_PRICE              = var.config.instance_max_spot_price
-      INSTANCE_TARGET_CAPACITY_TYPE        = var.config.instance_target_capacity_type
-      INSTANCE_TYPES                       = join(",", var.config.instance_types)
-      LAUNCH_TEMPLATE_NAME                 = var.config.runner.launch_template.name
-      LOG_LEVEL                            = var.config.lambda.log_level
-      LOG_TYPE                             = var.config.lambda.log_type
-      PARAMETER_GITHUB_APP_ID_NAME         = local.app_id_name
-      PARAMETER_GITHUB_APP_KEY_BASE64_NAME = local.key_base_name
-      RUNNER_EXTRA_LABELS                  = var.config.runner.extra_labels
-      RUNNER_GROUP_NAME                    = var.config.runner.group_name
-      RUNNER_OWNER                         = var.config.runner.pool_owner
-      SUBNET_IDS                           = join(",", var.config.subnet_ids)
+      DISABLE_RUNNER_AUTOUPDATE               = var.config.runner.disable_runner_autoupdate
+      ENABLE_EPHEMERAL_RUNNERS                = var.config.runner.ephemeral
+      ENVIRONMENT                             = terraform.workspace
+      INSTANCE_ALLOCATION_STRATEGY            = var.config.instance_allocation_strategy
+      INSTANCE_MAX_SPOT_PRICE                 = var.config.instance_max_spot_price
+      INSTANCE_TARGET_CAPACITY_TYPE           = var.config.instance_target_capacity_type
+      INSTANCE_TYPES                          = join(",", var.config.instance_types)
+      LAUNCH_TEMPLATE_NAME                    = var.config.runner.launch_template.name
+      LOG_LEVEL                               = var.config.lambda.log_level
+      LOG_TYPE                                = var.config.lambda.log_type
+      PARAMETER_GITHUB_APP_ID_NAME            = local.app_id_name
+      PARAMETER_GITHUB_APP_KEY_BASE64_NAME    = local.key_base_name
+      PARAMETER_GITHUB_APP_CLIENT_ID_NAME     = local.client_id_name
+      PARAMETER_GITHUB_APP_CLIENT_SECRET_NAME = local.client_secret_name
+      RUNNER_EXTRA_LABELS                     = var.config.runner.extra_labels
+      RUNNER_GROUP_NAME                       = var.config.runner.group_name
+      RUNNER_OWNER                            = var.config.runner.pool_owner
+      SUBNET_IDS                              = join(",", var.config.subnet_ids)
     }
   }
 
@@ -73,7 +79,12 @@ resource "aws_iam_role_policy" "pool" {
   name = "${var.config.stack_name}-${var.config.prefix}-lambda-pool-policy"
   role = aws_iam_role.pool.name
   policy = templatefile("${path.module}/policies/lambda-pool.json", {
-    all_arn = "*"
+    github_app_webhook_secret_arn = var.config.webhook_secret_arn
+    github_app_id_arn             = var.config.app_id_arn
+    github_app_key_base64_arn     = var.config.key_arn
+    github_app_client_id_arn      = var.config.client_id_arn
+    github_app_client_secret_arn  = var.config.client_secret_arn
+    all_arn                       = "*"
   })
 }
 
