@@ -24,7 +24,7 @@ module "runners" {
   subnet_ids  = ["${module.test_vpc.private_subnets_1_id}", "${module.test_vpc.private_subnets_2_id}", "${module.test_vpc.private_subnets_3_id}"]
 #   environment = "test"
   github_app = {
-    key_base64     = "odi-selfhosted-github-app.2022-12-07.private-key.pem"
+    key_base64     = "odi-selfhosted-github-app.2022-12-16.private-key.pem"
     id             = "269936"
     client_id      = "Iv1.20a3a1deb4920291"
     client_secret  = "3e6185fc6116fd655242304ed3a74463848abf40"

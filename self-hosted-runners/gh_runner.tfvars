@@ -66,7 +66,7 @@ idle_config = [
 ]
 github_app = {
   id             = "269936"
-  key_base64     = "odi-selfhosted-github-app.2022-12-07.private-key.pem"
+  key_base64     = "odi-selfhosted-github-app.2022-12-16.private-key.pem"
   webhook_secret = "OdiWebhookSecret07122022"
   client_id      = "Iv1.20a3a1deb4920291"
   client_secret  = "3e6185fc6116fd655242304ed3a74463848abf40"
