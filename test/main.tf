@@ -36,6 +36,8 @@ module "runners" {
   enable_organization_runners       = false
   scale_up_reserved_concurrent_executions = var.scale_up_reserved_concurrent_executions
   pool_lambda_reserved_concurrent_executions = var.pool_lambda_reserved_concurrent_executions
+  runner_enable_workflow_job_labels_check = var.runner_enable_workflow_job_labels_check
+  create_service_linked_role_spot = var.create_service_linked_role_spot
 #   instance_target_capacity_type = var.instance_target_capacity_type
 
   providers = {

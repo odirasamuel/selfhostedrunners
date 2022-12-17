@@ -55,6 +55,18 @@ variable "pool_lambda_reserved_concurrent_executions" {
   default     = -1
 }
 
+variable "runner_enable_workflow_job_labels_check" {
+  description = "If set to true all labels in the workflow job even are matched against the custom labels and GitHub labels (os, architecture and `self-hosted`). When the labels are not matching the event is dropped at the webhook."
+  type        = bool
+  default     = true
+}
+
+variable "create_service_linked_role_spot" {
+  description = "(optional) create the serviced linked role for spot instances that is required by the scale-up lambda."
+  type        = bool
+  default     = true
+}
+
 # variable "instance_target_capacity_type" {
 #   description = "Default lifecyle used runner instances, can be either `spot` or `on-demand`."
 #   type        = string
