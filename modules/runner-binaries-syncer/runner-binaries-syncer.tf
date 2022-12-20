@@ -91,14 +91,22 @@ resource "aws_iam_role_policy" "lambda_logging" {
   })
 }
 
+resource "aws_iam_role_policy" "lambda_syncer_vpc" {
+  count = length(var.lambda_subnet_ids) > 0 && length([aws_security_group.runner_bin_sg.id]) > 0 ? 1 : 0
+  name  = "${var.stack_name}-${var.prefix}-lambda-syncer-vpc"
+  role  = aws_iam_role.syncer_lambda.id
+
+  policy = file("${path.module}/policies/lambda-vpc.json")
+}
+
 resource "aws_iam_role_policy" "syncer" {
   name = "${var.stack_name}-${var.prefix}-lambda-syncer-s3-policy"
   role = aws_iam_role.syncer_lambda.id
 
   policy = templatefile("${path.module}/policies/lambda-syncer.json", {
+    s3_resource_arn_3 = "${aws_s3_bucket.action_dist.arn}/${local.action_runner_distribution_object_key}",
     s3_resource_arn_1 = "${aws_s3_bucket.action_dist.arn}",
     s3_resource_arn_2 = "${aws_s3_bucket.action_dist.arn}/*",
-    s3_resource_arn_3 = "${aws_s3_bucket.action_dist.arn}/${local.action_runner_distribution_object_key}"
     other_arn         = "*"
   })
 }

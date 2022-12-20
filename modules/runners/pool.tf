@@ -30,6 +30,7 @@ module "pool" {
       s3_key            = data.aws_s3_object.lambda_s3_bucket.key
       s3_object_version = data.aws_s3_object.lambda_s3_bucket.version_id
       subnet_ids        = var.lambda_subnet_ids
+      security_group_ids = ["${aws_security_group.runner_sg[0].id}"]
       architecture      = var.lambda_architecture
       runtime           = var.lambda_runtime
       timeout           = var.pool_lambda_timeout

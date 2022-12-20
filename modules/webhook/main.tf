@@ -41,7 +41,13 @@ resource "aws_apigatewayv2_stage" "webhook" {
   api_id      = aws_apigatewayv2_api.webhook.id
   name        = "$default"
   auto_deploy = true
-
+  dynamic "access_log_settings" {
+    for_each = var.webhook_lambda_apigateway_access_log_settings[*]
+    content {
+      destination_arn = access_log_settings.value.destination_arn
+      format          = access_log_settings.value.format
+    }
+  }
   tags = local.tags
 }
 
