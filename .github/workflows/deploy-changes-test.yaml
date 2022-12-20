@@ -61,7 +61,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -input=false -var-file=gh_runner.tfvars -no-color -out tf_plan_dev
+          terraform plan -input=false -var-file=test.tfvars -no-color -out tf_plan_dev
         working-directory: test/
         shell: bash
       - name: Terraform Show

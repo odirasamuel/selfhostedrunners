@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  deploy-terraform-configurations-to-python-package-index-stack-dev:
+  deploy-terraform-configurations:
     runs-on: "self-hosted"
     steps:
       - name: Checkout code
