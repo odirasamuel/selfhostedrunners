@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  deploy-terraform-configurations for selfhosted directory:
+  deploy-terraform-configurations-for-selfhosted-directory:
     runs-on: "self-hosted"
     steps:
       - name: Checkout code
