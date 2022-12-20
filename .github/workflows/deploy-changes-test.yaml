@@ -45,7 +45,7 @@ jobs:
         shell: bash
       - name: Terraform Workspace
         id: workspace-setup
-        run: terraform workspace select dev
+        run: terraform workspace select test
         working-directory: test/
         shell: bash
       - name: Terraform Format
@@ -61,13 +61,13 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -input=false -var-file=test.tfvars -no-color -out tf_plan_dev
+          terraform plan -input=false -var-file=test.tfvars -no-color -out tf_plan_test
         working-directory: test/
         shell: bash
       - name: Terraform Show
         id: show
         run: |
-          terraform show -no-color tf_plan_dev 2>&1 | tee /tmp/tf_plan_dev.txt
+          terraform show -no-color tf_plan_test 2>&1 | tee /tmp/tf_plan_test.txt
         working-directory: test/
         shell: bash
       - name: Write Plan to Pull-Request
@@ -109,6 +109,6 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          terraform apply -input=false tf_plan_dev
+          terraform apply -input=false tf_plan_test
         working-directory: test/
         shell: bash
